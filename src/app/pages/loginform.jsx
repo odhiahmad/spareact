@@ -3,9 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { setToken } from "../../utils/cookie";
 import Input from "../formik/input";
-import Select from "../formik/select";
 import Button from "../formik/button";
-import Radio from "../formik/radio";
 import { login } from "../../services/login";
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -20,15 +18,15 @@ export default function FormLogin() {
   const onSubmit = async (values) => {
     try {
       setLoading(true);
-
       const tesLogin = await login({
         email: values.email,
         password: values.password,
       });
-      setToken(tesLogin.data.token);
+      if (tesLogin.data.berhasil === true) {
+        setToken(tesLogin.data.token);
+      }
       setLoading(false);
     } catch (error) {
-      // setToken("test");
       setLoading(false);
     }
   };
@@ -43,6 +41,7 @@ export default function FormLogin() {
       onSubmit(values);
     },
   });
+
   return (
     <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>
       <div className="rounded-md shadow-sm -space-y-px">
@@ -68,6 +67,7 @@ export default function FormLogin() {
           errorMsg={formik.errors.password}
         />
       </div>
+
       <Button id="login-submit" type="submit" loading={loading}>
         Login
       </Button>

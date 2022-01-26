@@ -1,14 +1,14 @@
 import * as React from "react";
-
-import { login } from "../../services/login";
-
-import { setToken } from "../../utils/cookie";
-
 import { Link } from "react-router-dom";
-
 import Main from "../layout/Main";
 import FormLogin from "./loginform";
+import Button from "../formik/button";
 export default function Login() {
+  const klikHasil = (value) => {
+    if (value === "gunting") {
+    }
+  };
+
   return (
     <Main>
       <header className="bg-white shadow">
