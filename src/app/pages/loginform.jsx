@@ -14,6 +14,7 @@ const loginSchema = Yup.object().shape({
 
 export default function FormLogin() {
   const [loading, setLoading] = React.useState(false);
+  setLoading(true);
 
   const onSubmit = async (values) => {
     try {
