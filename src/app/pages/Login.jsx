@@ -1,13 +1,36 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Main from "../layout/Main";
-import FormLogin from "./loginform";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import Input from "../formik/input";
 import Button from "../formik/button";
-export default function Login() {
-  const klikHasil = (value) => {
-    if (value === "gunting") {
-    }
+import { connect } from "react-redux";
+import { getError, getLoading } from "../redux/store/login/selectors";
+import { signIn } from "../redux/store/login/actions";
+
+const loginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Format email salah")
+    .required("Email tidak boleh kosong"),
+  password: Yup.string().required("Password tidak boleh kosong"),
+});
+
+function Login({ signIn, loading, error }) {
+  const onSubmit = async (values) => {
+    await signIn({ email: values.email, password: values.password });
   };
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: loginSchema,
+    onSubmit: (values) => {
+      onSubmit(values);
+    },
+  });
 
   return (
     <Main>
@@ -32,7 +55,38 @@ export default function Login() {
                 Let's login your Account
               </p>
             </div>
-            <FormLogin />
+            <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>
+              <div className="rounded-md shadow-sm -space-y-px">
+                <Input
+                  id="email-input"
+                  name="email"
+                  placeholder="Masukan Email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.errors.email !== undefined && formik.touched.email
+                  }
+                  errorMsg={formik.errors.email}
+                />
+                <Input
+                  type="password"
+                  id="password-input"
+                  name="password"
+                  placeholder="Password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.errors.password !== undefined &&
+                    formik.touched.password
+                  }
+                  errorMsg={formik.errors.password}
+                />
+              </div>
+
+              <Button id="login-submit" type="submit" loading={loading}>
+                Login
+              </Button>
+            </form>
             <p className="mt-4 text-center text-sm text-gray-600">
               Did you have an account ?{" "}
               <Link to={"registration"}>Registration Here</Link>
@@ -43,3 +97,14 @@ export default function Login() {
     </Main>
   );
 }
+
+const mapStateToProps = (state) => ({
+  loading: getLoading(state),
+  error: getError(state),
+});
+
+const mapDispatchToProps = {
+  signIn: signIn,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

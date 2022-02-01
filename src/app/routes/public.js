@@ -1,4 +1,4 @@
-import { Home, Contact, About, Login } from "../pages";
+import { Home, Login } from "../pages";
 
 const routes = [
   {
@@ -17,7 +17,7 @@ const routes = [
   },
 
   {
-    id: 3,
+    id: 2,
     key: "login",
     name: "login",
     element: <Login />,

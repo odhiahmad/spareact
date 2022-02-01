@@ -7,7 +7,7 @@ const navigation = [
   { name: "Home", key: "/home", current: true, id: 0 },
   { name: "About", key: "/about", current: false, id: 1 },
   { name: "Contact", key: "/contact", current: false, id: 2 },
-  { name: "Login", key: "/login", current: false, id: 2 },
+  { name: "Login", key: "/login", current: false, id: 4 },
 ];
 
 function Sidebar() {
